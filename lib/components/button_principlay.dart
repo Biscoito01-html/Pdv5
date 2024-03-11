@@ -26,12 +26,12 @@ class ButtonPrinciplay extends StatelessWidget {
           color: Theme.of(context).secondaryHeaderColor,
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             icon,
             Text(
               text,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ],
         ),

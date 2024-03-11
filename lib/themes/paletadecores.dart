@@ -30,6 +30,7 @@ class CustomColors {
   static const Color grey =
       Color(0xFFA6A6A6); // Cinza médio, bom para contraste com cores vivas
   static const Color black = Color.fromRGBO(36, 36, 36, 1);
+  static const Color black12 = Color.fromRGBO(25, 31, 44, 1);
 
   static const Color darkGrey = Color(0xFF333333);
   static const Color lightGrey = Color(0xFFE5E5E5);

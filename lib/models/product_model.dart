@@ -4,20 +4,20 @@ import 'package:projetomoderno/models/category_model.dart';
 import 'package:projetomoderno/models/stock_model.dart';
 
 class ProductModel {
-  final String id;
-  final String? codigodeBarras;
-  final String description;
-  final double price;
-  final File imageUrl;
-  final CategoryModel category;
-  final String? lote;
-  final String? validadeString;
-  final DateTime? validade;
-  final StockModel stock;
+  String? id;
+  String? codigodeBarras;
+  String description;
+  double price;
+  File imageUrl;
+  CategoryModel category;
+  String? lote;
+  String? validadeString;
+  DateTime? validade;
+  StockModel stock;
   DateTime createdAt;
 
   ProductModel({
-    required this.id,
+    this.id,
     required this.codigodeBarras,
     required this.description,
     required this.price,
@@ -47,7 +47,7 @@ class ProductModel {
       'imageUrl': imageUrl.path,
       'category': category.toMap(),
       'lote': lote,
-      'validade': validadeString,
+      'validade': validade?.toIso8601String(),
       'createdAt': createdAt.toIso8601String(),
       'stock': stock.toMap(),
     };
@@ -58,19 +58,21 @@ class ProductModel {
       id: map['id'] ?? '',
       codigodeBarras: map['codigodeBarras'] ?? '',
       description: map['description'] ?? '',
-      price: map['price']?.toDouble() ?? 0.0,
-      imageUrl: File(
-          map['imageUrl']), // Alterado para criar um File a partir do caminho
-      category: CategoryModel.fromMap(map['category'] ?? {}, String: null),
+      price: (map['price'] as num?)?.toDouble() ??
+          0.0, // Garante a conversão correta para double
+      imageUrl: File(map[
+          'imageUrl']), // Assume-se que map['imageUrl'] é uma String com o caminho do arquivo
+      category: CategoryModel.fromMap(
+          map['category'] as Map<String, dynamic>? ??
+              {}), // Assume-se que fromMap aceita Map<String, dynamic>
       lote: map['lote'],
       validadeString: map['validade'],
       validade:
           map['validade'] != null ? DateTime.parse(map['validade']) : null,
-      stock: StockModel.fromMap(map['stock'] ?? {}),
+      stock: StockModel.fromMap(map['stock'] as Map<String, dynamic>? ?? {}),
       createdAt: DateTime.parse(map['createdAt']),
     );
   }
-
   @override
   String toString() {
     return 'ProductModel(id: $id, codigodeBarras: $codigodeBarras, description: $description, price: $price, imageUrl: $imageUrl, category: $category, lote: $lote, validade: $validadeString, stock: $stock, createdAt: $createdAt)';

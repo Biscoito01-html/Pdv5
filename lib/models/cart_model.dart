@@ -1,4 +1,5 @@
 class CartModel {
+  String? id;
   String? codigodeBarras;
   String description;
   double price;
@@ -7,6 +8,7 @@ class CartModel {
   double quantity;
 
   CartModel({
+    this.id,
     this.codigodeBarras,
     required this.description,
     required this.price,
@@ -17,6 +19,7 @@ class CartModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'codigodeBarras': codigodeBarras,
       'description': description,
       'price': price,
@@ -28,6 +31,7 @@ class CartModel {
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
     return CartModel(
+      id: map['id'],
       codigodeBarras: map['codigodeBarras'],
       description: map['description'],
       price: map['price'],
@@ -39,11 +43,12 @@ class CartModel {
 
   @override
   String toString() {
-    return 'CartModel(codigodeBarras: $codigodeBarras, description: $description, price: $price, lote: $lote, createdAt: $createdAt, quantity: $quantity)';
+    return 'CartModel(id: $id, codigodeBarras: $codigodeBarras, description: $description, price: $price, lote: $lote, createdAt: $createdAt, quantity: $quantity)';
   }
 
   toJson() {
     return {
+      'id': id,
       'codigodeBarras': codigodeBarras,
       'description': description,
       'price': price,

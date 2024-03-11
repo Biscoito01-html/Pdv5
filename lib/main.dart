@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projetomoderno/pages/HomePage/myPrincipalHomePage.dart';
 import 'package:projetomoderno/routes/routers.dart';
-import 'package:projetomoderno/states/states_product_cart.dart';
+import 'package:projetomoderno/states/states_cart_product.dart';
+import 'package:projetomoderno/states/states_product.dart';
 import 'package:projetomoderno/themes/usecasethema.dart';
 import 'package:projetomoderno/utils/Strings_constantes.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => StatesProductCart()),
+        ChangeNotifierProvider(create: (context) => StatesCart()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

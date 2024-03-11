@@ -1,9 +1,9 @@
 class StockModel {
-  final String productId;
+  final String? productId;
   double quantity;
 
   StockModel({
-    required this.productId,
+    this.productId,
     required this.quantity,
   });
 

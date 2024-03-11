@@ -17,32 +17,20 @@ class _TabCaixaState extends State<TabCaixa> {
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.grey[400],
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             children: [
-              /* Expanded(
-                child: ListView(
+              //Aqui será inserido a lista de compras
+              Container(
+                child: Column(
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.add),
-                      title: const Text('teste'),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.highlight_remove_outlined,
-                          color: Colors.red,
-                        ),
-                      ),
+                    Row(
+                      children: [Text('data')],
                     ),
                   ],
                 ),
-              ),*/
-              /*  ListView.builder(
-                itemBuilder: (context, index) => Text('teste'),
-                itemCount: 10,
-              ),*/
+              ),
               const Divider(
                 color: Colors.black,
                 height: 3,
@@ -79,6 +67,10 @@ class _TabCaixaState extends State<TabCaixa> {
               )
             ],
           ),
+        ),
+        Divider(
+          color: Colors.black,
+          height: 3,
         ),
         const SizedBox(
           height: 10,

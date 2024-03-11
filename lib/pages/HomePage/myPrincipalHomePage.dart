@@ -27,9 +27,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: const Icon(
                   Icons.store_mall_directory_sharp,
                 ),
-                text: 'Lojas',
+                text: 'Vendas',
                 onTap: () {
                   Navigator.pushNamed(context, '/sales');
+                },
+              ),
+              ButtonPrinciplay(
+                icon: const Icon(
+                  Icons.post_add_rounded,
+                ),
+                text: 'Produtos',
+                onTap: () {
+                  Navigator.pushNamed(context, '/productExibition');
                 },
               ),
             ],

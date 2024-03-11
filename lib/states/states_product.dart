@@ -7,7 +7,12 @@ class StatesProductCart with ChangeNotifier {
   Map<String, ProductModel> get products => _products;
 
   void addProduct(ProductModel product) {
-    _products[product.id] = product;
+    _products[product.id as String] = product;
+    notifyListeners();
+  }
+
+  void removeProduct(String productId) {
+    _products.remove(productId);
     notifyListeners();
   }
 

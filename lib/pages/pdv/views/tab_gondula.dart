@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:projetomoderno/components/card_product_item.dart';
+import 'package:projetomoderno/states/states_product.dart';
 import 'package:projetomoderno/themes/paletadecores.dart';
-
 import 'package:projetomoderno/utils/listCategory.dart';
+import 'package:provider/provider.dart';
 
 class TabGondula extends StatefulWidget {
   const TabGondula({super.key});
-
   @override
   State<TabGondula> createState() => _TabGondulaState();
 }
@@ -42,6 +43,9 @@ class _TabGondulaState extends State<TabGondula> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    final provider = Provider.of<StatesProductCart>(context).products;
     return Column(
       children: [
         const SizedBox(
@@ -50,14 +54,15 @@ class _TabGondulaState extends State<TabGondula> {
         SizedBox(
           child: TextFormField(
             autocorrect: true,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(6.0),
                 ),
               ),
               labelText: 'Pesquisar',
-              prefixIcon: Icon(Icons.search),
+              prefixIcon:
+                  IconButton(onPressed: () {}, icon: Icon(Icons.camera)),
             ),
           ),
         ),
@@ -70,11 +75,16 @@ class _TabGondulaState extends State<TabGondula> {
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
                 child: TextButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(
-                      CustomColors.white,
-                    ),
-                    backgroundColor: MaterialStateProperty.all(
-                      CustomColors.darkPurple,
+                    foregroundColor:
+                        MaterialStateProperty.all(CustomColors.white),
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return CustomColors.lightPurple;
+                        } else {
+                          return CustomColors.darkPurple;
+                        }
+                      },
                     ),
                     shape: MaterialStateProperty.all(
                       const RoundedRectangleBorder(
@@ -93,20 +103,37 @@ class _TabGondulaState extends State<TabGondula> {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[400],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            children: [],
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                    itemCount: provider.length,
+                    itemBuilder: (context, index) {
+                      final product = provider.values.toList()[index];
+                      return CardProductItem(product: product);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(
           height: 10,
         ),
         SizedBox(
-          child: ElevatedButton(onPressed: () {}, child: Text("Pagamento")),
+          width: size.width * 0.6,
+          height: 30,
+          child:
+              ElevatedButton(onPressed: () {}, child: const Text("Pagamento")),
         )
       ],
     );

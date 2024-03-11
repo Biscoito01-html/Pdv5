@@ -10,24 +10,22 @@ enum Category {
 }
 
 class CategoryModel {
-  final String? id;
   final Category name;
 
-  CategoryModel(
-    this.id, {
+  CategoryModel({
     required this.name,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name.toString().split('.').last,
     };
   }
 
-  factory CategoryModel.fromMap(Map<String, dynamic> map, {required String}) {
+  factory CategoryModel.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return CategoryModel(
-      map['id'] ?? '',
       name: Category.values.firstWhere(
         (category) => category.toString().split('.').last == map['name'],
         orElse: () => Category.outros,
@@ -37,13 +35,12 @@ class CategoryModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'name': name.toString().split('.').last,
     };
   }
 
   @override
   String toString() {
-    return 'CategoryModel(id: $id, name: $name)';
+    return 'CategoryModel( name: $name)';
   }
 }
