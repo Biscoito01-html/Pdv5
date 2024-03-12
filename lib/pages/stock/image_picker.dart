@@ -16,21 +16,22 @@ class _ImagePickterState extends State<ImagePickter> {
   File? image;
 
   void getImage() async {
-    final pickedFile = await ImagePicker()
-        .pickImage(source: ImageSource.camera, maxWidth: 600);
-
-    if (pickedFile == null || pickedFile.path == null) {
-      return;
+    try {
+      final pickedFile = await ImagePicker()
+          .pickImage(source: ImageSource.camera, maxWidth: 600);
+      if (pickedFile == null || pickedFile.path == null) {
+        return;
+      }
+      setState(() {
+        image = File(pickedFile.path!);
+      });
+      final appDir = await path_provider.getApplicationDocumentsDirectory();
+      final fileName = path.basename(image!.path);
+      final savedImage = await image!.copy('${appDir.path}/$fileName');
+      widget.setImage(savedImage);
+    } catch (e) {
+      print(e);
     }
-
-    setState(() {
-      image = File(pickedFile.path!);
-    });
-
-    final appDir = await path_provider.getApplicationDocumentsDirectory();
-    final fileName = path.basename(image!.path);
-    final savedImage = await image!.copy('${appDir.path}/$fileName');
-    widget.setImage(savedImage);
   }
 
   @override

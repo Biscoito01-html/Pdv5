@@ -138,7 +138,23 @@ class _EditProductFormState extends State<EditProductForm> {
                       );
                       Navigator.pop(context);
                     } catch (e) {
-                      print(e);
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text(
+                            'Erro ao salvar alterações, por favor tente novamente!',
+                          ),
+                          content: Text(e.toString()),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     }
                   }
                 },

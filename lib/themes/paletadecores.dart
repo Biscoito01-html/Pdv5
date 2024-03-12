@@ -34,4 +34,5 @@ class CustomColors {
 
   static const Color darkGrey = Color(0xFF333333);
   static const Color lightGrey = Color(0xFFE5E5E5);
+  static const Color blueDark = Color.fromARGB(200, 7, 10, 172);
 }

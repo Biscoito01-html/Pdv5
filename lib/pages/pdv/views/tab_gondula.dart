@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projetomoderno/components/card_product_item.dart';
+import 'package:projetomoderno/models/product_model.dart';
 import 'package:projetomoderno/states/states_product.dart';
-import 'package:projetomoderno/themes/paletadecores.dart';
-import 'package:projetomoderno/utils/listCategory.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class TabGondula extends StatefulWidget {
   const TabGondula({super.key});
@@ -12,40 +12,33 @@ class TabGondula extends StatefulWidget {
 }
 
 class _TabGondulaState extends State<TabGondula> {
-  onCategoryButtonPressed(String category) {
-    switch (category) {
-      case 'Cereais':
-        print('Ação para Cereais');
-        break;
-      case 'Legumes':
-        print('Ação para Legumes');
-        break;
-      case 'Frutas':
-        print('Ação para Frutas');
-        break;
-      case 'Verduras':
-        print('Ação para Verduras');
-        break;
-      case 'Carnes':
-        print('Ação para Carnes');
-        break;
-      case 'Bebidas':
-        print('Ação para Bebidas');
-        break;
-      case 'Doces':
-        print('Ação para Doces');
-        break;
-      default:
-        print('Ação padrão');
-        break;
+  List<ProductModel> produtoslistados = [];
+  final TextEditingController codigoDeBarrasController =
+      TextEditingController();
+
+  void updateProductList(String searchTerm) {
+    final provider =
+        Provider.of<StatesProductCart>(context, listen: false).products;
+
+    try {
+      final filteredProducts = provider.values
+          .where((element) =>
+              element.description
+                  .toLowerCase()
+                  .contains(searchTerm.toLowerCase()) ||
+              element.codigodeBarras!.contains(searchTerm.toLowerCase()))
+          .toList();
+
+      setState(() {
+        produtoslistados = filteredProducts;
+      });
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    final provider = Provider.of<StatesProductCart>(context).products;
     return Column(
       children: [
         const SizedBox(
@@ -54,51 +47,38 @@ class _TabGondulaState extends State<TabGondula> {
         SizedBox(
           child: TextFormField(
             autocorrect: true,
+            onChanged: (value) {
+              updateProductList(value);
+            },
             decoration: InputDecoration(
-              border: OutlineInputBorder(
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(6.0),
                 ),
               ),
               labelText: 'Pesquisar',
-              prefixIcon:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.camera)),
-            ),
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(
-              categories.length,
-              (index) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-                child: TextButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all(CustomColors.white),
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.pressed)) {
-                          return CustomColors.lightPurple;
-                        } else {
-                          return CustomColors.darkPurple;
-                        }
-                      },
-                    ),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    onCategoryButtonPressed(categories[index]);
-                  },
-                  child: Text(categories[index]),
-                ),
+              prefixIcon: IconButton(
+                onPressed: () async {
+                  try {
+                    String barcodeScanRes =
+                        await FlutterBarcodeScanner.scanBarcode(
+                      '#ff6666',
+                      'Cancelar',
+                      true,
+                      ScanMode.BARCODE,
+                    );
+                    if (barcodeScanRes == '-1') {
+                      return;
+                    }
+                    setState(() {
+                      codigoDeBarrasController.text = barcodeScanRes;
+                    });
+                    updateProductList(barcodeScanRes);
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                icon: const Icon(Icons.camera),
               ),
             ),
           ),
@@ -114,10 +94,11 @@ class _TabGondulaState extends State<TabGondula> {
                   child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                    itemCount: provider.length,
+                      crossAxisCount: 3,
+                    ),
+                    itemCount: produtoslistados.length,
                     itemBuilder: (context, index) {
-                      final product = provider.values.toList()[index];
+                      final product = produtoslistados[index];
                       return CardProductItem(product: product);
                     },
                   ),
@@ -129,12 +110,6 @@ class _TabGondulaState extends State<TabGondula> {
         const SizedBox(
           height: 10,
         ),
-        SizedBox(
-          width: size.width * 0.6,
-          height: 30,
-          child:
-              ElevatedButton(onPressed: () {}, child: const Text("Pagamento")),
-        )
       ],
     );
   }

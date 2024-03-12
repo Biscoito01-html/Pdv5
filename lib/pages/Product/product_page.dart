@@ -34,16 +34,16 @@ class _ProductPageState extends State<ProductPage> {
                             provider.products.values.toList()[index];
                         return Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(5),
                             color: CustomColors.black12,
                           ),
-                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          margin: const EdgeInsets.symmetric(vertical: 2),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               SizedBox(
-                                width: 20,
-                                height: 20,
+                                width: 30,
+                                height: 30,
                                 child: Image.file(
                                   product.imageUrl,
                                   fit: BoxFit.cover,
@@ -58,7 +58,7 @@ class _ProductPageState extends State<ProductPage> {
                                   style: const TextStyle(fontSize: 12)),
                               IconButton(
                                 onPressed: () {
-                                  print('Remover ${product.description}');
+                                  provider.removeProduct(product.id as String);
                                 },
                                 icon: const Icon(
                                   Icons.delete,

@@ -7,19 +7,38 @@ class StatesProductCart with ChangeNotifier {
   Map<String, ProductModel> get products => _products;
 
   void addProduct(ProductModel product) {
-    _products[product.id as String] = product;
+    try {
+      _products[product.id as String] = product;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void clearProduct() {
+    _products.clear();
     notifyListeners();
   }
 
   void removeProduct(String productId) {
-    _products.remove(productId);
-    notifyListeners();
+    if (_products.containsKey(productId)) {
+      try {
+        _products.remove(productId);
+        notifyListeners();
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   void updateProduct(String productId, ProductModel updatedProduct) {
     if (_products.containsKey(productId)) {
-      _products[productId] = updatedProduct;
-      notifyListeners();
+      try {
+        _products.update(productId, (product) => updatedProduct);
+        notifyListeners();
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }

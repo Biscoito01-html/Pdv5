@@ -20,6 +20,7 @@ class _CardProductItemState extends State<CardProductItem> {
   Widget build(BuildContext context) {
     final provider = Provider.of<StatesCart>(context);
     return InkWell(
+      borderRadius: BorderRadius.circular(10),
       onTap: () {
         showDialog(
           context: context,
@@ -27,25 +28,29 @@ class _CardProductItemState extends State<CardProductItem> {
             return AlertDialog(
               title: Text(
                 widget.product.description,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              content: Column(
-                children: [
-                  Text(
-                    'Insira a quantidade:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    controller: quantityController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Quantidade',
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(),
+              content: SizedBox(
+                width: 300,
+                height: 120,
+                child: Column(
+                  children: [
+                    const Text(
+                      'Insira a quantidade:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Quantidade',
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               actions: [
                 TextButton(
@@ -79,6 +84,9 @@ class _CardProductItemState extends State<CardProductItem> {
                             createdAt: DateTime.now(),
                           ),
                         );
+                        print('Adicionado ao carrinho');
+
+                        print(quantity);
                       }
 
                       Navigator.pop(context);
@@ -94,11 +102,14 @@ class _CardProductItemState extends State<CardProductItem> {
         );
       },
       child: Card(
+        elevation: 3,
+        color: Colors.black38,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SizedBox(
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 50,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.file(
@@ -107,7 +118,21 @@ class _CardProductItemState extends State<CardProductItem> {
                 ),
               ),
             ),
-            Text('${widget.product.price}'),
+            SizedBox(
+              width: 45,
+              child: Text(
+                widget.product.description,
+                style: const TextStyle(
+                    fontSize: 10, overflow: TextOverflow.ellipsis),
+              ),
+            ),
+            Text(
+              'R\$ ${(widget.product.price).toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.green,
+              ),
+            ),
           ],
         ),
       ),

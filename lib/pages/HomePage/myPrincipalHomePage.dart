@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetomoderno/components/button_principlay.dart';
+import 'package:projetomoderno/pages/HomePage/total_geral.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,6 +21,22 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).secondaryHeaderColor,
+            ),
+            width: 350,
+            height: 350,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Vendas', style: Theme.of(context).textTheme.titleLarge),
+                const TotalGeral()
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -44,11 +61,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

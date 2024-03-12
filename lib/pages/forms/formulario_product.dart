@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:projetomoderno/models/category_model.dart';
 import 'package:projetomoderno/models/product_model.dart';
@@ -10,11 +9,10 @@ import 'package:projetomoderno/utils/Strings_constantes.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
-
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class FormularioProduct extends StatefulWidget {
-  FormularioProduct({super.key});
+  const FormularioProduct({super.key});
 
   @override
   State<FormularioProduct> createState() => _FormularioProductState();
@@ -56,8 +54,8 @@ class _FormularioProductState extends State<FormularioProduct> {
     }
 
     final provider = Provider.of<StatesProductCart>(context);
-
     var productId = Uuid().v4();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppConstStrings.appName),
@@ -262,7 +260,23 @@ class _FormularioProductState extends State<FormularioProduct> {
                           ),
                         );
                       } catch (e) {
-                        print("Erro ao criar produto: $e");
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text(
+                              'Erro ao salvar alterações, por favor tente novamente!',
+                            ),
+                            content: Text(e.toString()),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
                       }
                     }
                   },

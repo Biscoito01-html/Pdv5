@@ -5,7 +5,7 @@ ThemeData buildThemeData() {
   return ThemeData(
       secondaryHeaderColor: CustomColors.primaryPurple,
       cardTheme: CardTheme(
-        color: CustomColors.darkGrey,
+        color: CustomColors.lightRose,
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -14,6 +14,7 @@ ThemeData buildThemeData() {
       iconTheme: const IconThemeData(
         color: CustomColors.white,
       ),
+      primaryColorDark: CustomColors.blueDark,
       primaryColor: CustomColors.lightRed,
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: CustomColors.darkPurple,
@@ -68,16 +69,16 @@ ThemeData buildThemeData() {
         bodyLarge: TextStyle(
           color: CustomColors.white,
           fontFamily: 'Roboto',
-          fontSize: 16,
+          fontSize: 14,
         ),
         bodyMedium: TextStyle(
           color: CustomColors.white,
-          fontSize: 19,
+          fontSize: 11,
         ),
         bodySmall: TextStyle(
           color: CustomColors.white,
           fontFamily: 'Roboto',
-          fontSize: 10,
+          fontSize: 9,
         ),
         headlineMedium:
             TextStyle(color: CustomColors.white, fontFamily: 'Roboto'),
