@@ -18,7 +18,7 @@ class _ImagePickterState extends State<ImagePickter> {
   void getImage() async {
     try {
       final pickedFile = await ImagePicker()
-          .pickImage(source: ImageSource.camera, maxWidth: 600);
+          .pickImage(source: ImageSource.gallery, maxWidth: 600);
       if (pickedFile == null || pickedFile.path == null) {
         return;
       }

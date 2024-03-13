@@ -54,7 +54,7 @@ class _FormularioProductState extends State<FormularioProduct> {
     }
 
     final provider = Provider.of<StatesProductCart>(context);
-    var productId = Uuid().v4();
+    var productId = const Uuid().v4();
 
     return Scaffold(
       appBar: AppBar(
