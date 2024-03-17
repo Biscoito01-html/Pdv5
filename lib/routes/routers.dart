@@ -6,6 +6,7 @@ import 'package:projetomoderno/pages/clients/clientes_view_page.dart';
 import 'package:projetomoderno/pages/forms/formulario_product.dart';
 
 import 'package:projetomoderno/pages/pdv/front_home_sales.dart';
+import 'package:projetomoderno/pages/pedidos/pedidos_value.dart';
 
 class AppRoutes {
   static final Map<String, Widget Function(BuildContext)> routes = {
@@ -13,5 +14,6 @@ class AppRoutes {
     '/productExibition': (contex) => const ProductPage(),
     '/formInputProduct': (contex) => const FormularioProduct(),
     '/clientExibition': (contex) => ClientesViewPage(),
+    '/pedidos': (contex) => PedidosValue()
   };
 }

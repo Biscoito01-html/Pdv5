@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:projetomoderno/models/category_model.dart';
 import 'package:projetomoderno/models/product_model.dart';
-import 'package:projetomoderno/models/stock_model.dart';
-import 'package:projetomoderno/pages/stock/image_picker.dart';
 import 'package:projetomoderno/states/states_product.dart';
 import 'package:projetomoderno/utils/Strings_constantes.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +27,10 @@ class _FormularioProductState extends State<FormularioProduct> {
       TextEditingController();
   final TextEditingController createdAtController = TextEditingController();
   final TextEditingController quantitycontroller = TextEditingController();
+  final TextEditingController imageUrlController = TextEditingController();
+  final TextEditingController dataDeValidadeController =
+      TextEditingController();
 
-  late File imagea;
   Category? selectedCategory;
 
   // Lista de categorias
@@ -49,9 +48,6 @@ class _FormularioProductState extends State<FormularioProduct> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    void setImage(File image) {
-      imagea = image;
-    }
 
     final provider = Provider.of<StatesProductCart>(context);
     var productId = const Uuid().v4();
@@ -217,42 +213,46 @@ class _FormularioProductState extends State<FormularioProduct> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const SizedBox(height: 10),
-                ImagePickter(
-                  setImage: setImage,
+                TextFormField(
+                  controller: imageUrlController,
+                  decoration: const InputDecoration(
+                    labelText: 'Url imagem',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'informe uma Url';
+                    }
+                    return null;
+                  },
+                ),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    final DateFormat format = DateFormat('dd/MM/yyyy');
-                    if (formKey.currentState!.validate() &&
-                        imagea.existsSync()) {
+                    if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      print(validadeStringController.text);
-
                       try {
-                        DateTime validade =
-                            format.parse(validadeStringController.text);
-                        print(validade);
                         ProductModel product = ProductModel(
                           id: productId,
-                          codigodeBarras: codigoDeBarrasController.text,
-                          description: descriptionController.text,
-                          price: double.parse(priceController.text),
-                          imageUrl: imagea,
-                          category: CategoryModel.fromMap(
-                            {
-                              'name': '$selectedCategory',
-                            },
-                          ),
-                          lote: loteController.text,
-                          validade: validade,
-                          stock: StockModel(
-                            quantity: double.parse(quantitycontroller.text),
-                          ),
-                          createdAt: DateTime.now(),
+                          codigodeBarras: codigoDeBarrasController.text ?? '',
+                          description: descriptionController.text ?? '',
+                          price: double.parse(priceController.text) ?? 0.0,
+                          imageUrl: imageUrlController.text ??
+                              'https://cdn-icons-png.flaticon.com/128/9582/9582627.png',
+                          quantity:
+                              double.parse(quantitycontroller.text) ?? 0.0,
                         );
+
                         provider.addProduct(product);
+
                         Navigator.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

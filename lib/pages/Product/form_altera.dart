@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:projetomoderno/models/product_model.dart';
-import 'package:projetomoderno/models/stock_model.dart';
 import 'package:projetomoderno/states/states_product.dart';
 import 'package:projetomoderno/utils/Strings_constantes.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +10,7 @@ class EditProductForm extends StatefulWidget {
 
   EditProductForm({super.key, required this.productModel});
   @override
+  // ignore: library_private_types_in_public_api
   _EditProductFormState createState() => _EditProductFormState();
 }
 
@@ -21,7 +20,6 @@ class _EditProductFormState extends State<EditProductForm> {
   TextEditingController codigodeBarrasController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
-  TextEditingController validadeController = TextEditingController();
 
   TextEditingController quantityController = TextEditingController();
 
@@ -31,11 +29,10 @@ class _EditProductFormState extends State<EditProductForm> {
 
     // Preencha os controladores com os valores iniciais do produto
     codigodeBarrasController.text = widget.productModel.codigodeBarras ?? '';
-    descriptionController.text = widget.productModel.description ?? '';
+    descriptionController.text = widget.productModel.description;
     priceController.text = widget.productModel.price.toString();
-    validadeController.text =
-        widget.productModel.validade?.toIso8601String() ?? '';
-    quantityController.text = widget.productModel.stock.quantity.toString();
+
+    quantityController.text = widget.productModel.quantity.toString();
   }
 
   @override
@@ -86,17 +83,6 @@ class _EditProductFormState extends State<EditProductForm> {
                 },
               ),
               TextFormField(
-                controller: validadeController,
-                decoration: const InputDecoration(labelText: 'Validade'),
-                keyboardType: TextInputType.datetime,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'A validade não pode estar vazia';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
                 controller: quantityController,
                 decoration: const InputDecoration(labelText: 'Quantidade'),
                 keyboardType:
@@ -120,21 +106,17 @@ class _EditProductFormState extends State<EditProductForm> {
                       provider.updateProduct(
                         widget.productModel.id as String,
                         ProductModel(
-                            id: widget.productModel.id,
-                            codigodeBarras: widget.productModel.codigodeBarras =
-                                codigodeBarrasController.text,
-                            description: widget.productModel.description =
-                                descriptionController.text,
-                            price: widget.productModel.price =
-                                double.parse(priceController.text),
-                            validade: widget.productModel.validade =
-                                DateTime.parse(validadeController.text),
-                            imageUrl: widget.productModel.imageUrl,
-                            category: widget.productModel.category,
-                            stock: widget.productModel.stock = StockModel(
-                              quantity: double.parse(quantityController.text),
-                            ),
-                            createdAt: widget.productModel.createdAt),
+                          id: widget.productModel.id,
+                          codigodeBarras: widget.productModel.codigodeBarras =
+                              codigodeBarrasController.text,
+                          description: widget.productModel.description =
+                              descriptionController.text,
+                          price: widget.productModel.price =
+                              double.parse(priceController.text),
+                          imageUrl: widget.productModel.imageUrl,
+                          quantity: widget.productModel.quantity =
+                              double.parse(quantityController.text),
+                        ),
                       );
                       Navigator.pop(context);
                     } catch (e) {

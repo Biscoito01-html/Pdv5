@@ -1,4 +1,4 @@
-import 'dart:io';
+/*import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -18,7 +18,7 @@ class _ImagePickterState extends State<ImagePickter> {
   void getImage() async {
     try {
       final pickedFile = await ImagePicker()
-          .pickImage(source: ImageSource.gallery, maxWidth: 600);
+          .pickImage(source: ImageSource.camera, maxWidth: 600);
       if (pickedFile == null || pickedFile.path == null) {
         return;
       }
@@ -73,3 +73,4 @@ class _ImagePickterState extends State<ImagePickter> {
     );
   }
 }
+*/

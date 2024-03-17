@@ -3,8 +3,6 @@ class CartModel {
   String? codigodeBarras;
   String description;
   double price;
-  String? lote;
-  DateTime createdAt;
   double quantity;
 
   CartModel({
@@ -12,8 +10,6 @@ class CartModel {
     this.codigodeBarras,
     required this.description,
     required this.price,
-    this.lote,
-    required this.createdAt,
     required this.quantity,
   });
 
@@ -23,8 +19,6 @@ class CartModel {
       'codigodeBarras': codigodeBarras,
       'description': description,
       'price': price,
-      'lote': lote,
-      'createdAt': createdAt.toIso8601String(),
       'quantity': quantity,
     };
   }
@@ -35,15 +29,13 @@ class CartModel {
       codigodeBarras: map['codigodeBarras'],
       description: map['description'],
       price: map['price'],
-      lote: map['lote'],
-      createdAt: DateTime.parse(map['createdAt']),
       quantity: map['quantity'],
     );
   }
 
   @override
   String toString() {
-    return 'CartModel(id: $id, codigodeBarras: $codigodeBarras, description: $description, price: $price, lote: $lote, createdAt: $createdAt, quantity: $quantity)';
+    return 'CartModel(id: $id, codigodeBarras: $codigodeBarras, description: $description, price: $price, quantity: $quantity)';
   }
 
   toJson() {
@@ -52,8 +44,6 @@ class CartModel {
       'codigodeBarras': codigodeBarras,
       'description': description,
       'price': price,
-      'lote': lote,
-      'createdAt': createdAt.toIso8601String(),
       'quantity': quantity,
     };
   }

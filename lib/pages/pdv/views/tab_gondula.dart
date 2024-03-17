@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetomoderno/components/card_product_item.dart';
+import 'package:projetomoderno/data/date_list_product.dart';
 import 'package:projetomoderno/models/product_model.dart';
 import 'package:projetomoderno/states/states_product.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,12 @@ class TabGondula extends StatefulWidget {
 }
 
 class _TabGondulaState extends State<TabGondula> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<StatesProductCart>(context, listen: false);
+  }
+
   List<ProductModel> produtoslistados = [];
   final TextEditingController codigoDeBarrasController =
       TextEditingController();
@@ -30,7 +37,7 @@ class _TabGondulaState extends State<TabGondula> {
           .toList();
 
       setState(() {
-        produtoslistados = filteredProducts;
+        produtoslistados = filteredProducts.cast<ProductModel>();
       });
     } catch (e) {
       print(e);
@@ -84,29 +91,37 @@ class _TabGondulaState extends State<TabGondula> {
           ),
         ),
         Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                    ),
-                    itemCount: produtoslistados.length,
-                    itemBuilder: (context, index) {
-                      final product = produtoslistados[index];
-                      return CardProductItem(product: product);
-                    },
-                  ),
+            child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ],
-            ),
-          ),
-        ),
+                child: FutureBuilder<List<ProductModel>>(
+                  future: DatabaseHelper.products(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Erro: ${snapshot.error}');
+                    } else if (!snapshot.hasData) {
+                      return const Center(
+                        child: Text('Nenhum produto cadastrado'),
+                      );
+                    } else {
+                      return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return CardProductItem(
+                            product: snapshot.data![index],
+                          );
+                        },
+                      );
+                    }
+                  },
+                ))),
         const SizedBox(
           height: 10,
         ),

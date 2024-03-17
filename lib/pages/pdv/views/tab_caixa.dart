@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projetomoderno/models/pedidos_model.dart';
 import 'package:projetomoderno/pages/pdv/views/page_pay.dart';
 import 'package:projetomoderno/states/states_cart_product.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class _TabCaixaState extends State<TabCaixa> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<StatesCart>(context).cart;
+    final metodosDeProvider = Provider.of<StatesCart>(context);
 
     final ammount = provider.values.fold<double>(
       0.0,
@@ -115,7 +117,11 @@ class _TabCaixaState extends State<TabCaixa> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PagePay(item: ammount),
+                    builder: (context) => PagePay(
+                      item: ammount,
+                      pedido:
+                          PedidosModel(produtos: metodosDeProvider.cartItems),
+                    ),
                   ),
                 );
               } catch (e) {

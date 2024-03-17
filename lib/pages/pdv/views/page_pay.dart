@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:projetomoderno/data/date_list_pedidos.dart';
+import 'package:projetomoderno/data/date_list_product.dart';
+
+import 'package:projetomoderno/models/pedidos_model.dart';
+import 'package:projetomoderno/models/product_model.dart';
 import 'package:projetomoderno/states/states_cart_product.dart';
 import 'package:projetomoderno/states/states_money_caixa.dart';
+import 'package:projetomoderno/states/states_pedidos_produtct.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class PagePay extends StatefulWidget {
+  final PedidosModel pedido;
   final double item;
-  PagePay({super.key, required this.item});
+  PagePay({super.key, required this.item, required this.pedido});
 
   @override
   State<PagePay> createState() => _PagePayState();
@@ -16,6 +24,7 @@ class _PagePayState extends State<PagePay> {
   Widget build(BuildContext context) {
     final provider = Provider.of<StatesMoneyCaixa>(context);
     final cart = Provider.of<StatesCart>(context);
+    final pedidos = Provider.of<StatesPedidosProdutct>(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Pagamento')),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -32,9 +41,15 @@ class _PagePayState extends State<PagePay> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         try {
                           provider.somar(widget.item, 'pix');
+                          final PedidosModel pedidosems = PedidosModel(
+                            id: const Uuid().v4(),
+                            produtos: cart.cartItems,
+                          );
+                          await DateListPedidos.insertPedido(pedidosems);
+                          await DatabaseHelper.updateProducts(cart.cartItems);
                           cart.finalizarPedido();
                           Navigator.pop(context);
 
@@ -68,10 +83,16 @@ class _PagePayState extends State<PagePay> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         try {
                           provider.somar(widget.item, 'cartao');
-
+                          pedidos.addPedidos(pedidos.pedidosItems);
+                          final PedidosModel pedidosems = PedidosModel(
+                            id: const Uuid().v4(),
+                            produtos: cart.cartItems,
+                          );
+                          await DateListPedidos.insertPedido(pedidosems);
+                          await DatabaseHelper.updateProducts(cart.cartItems);
                           cart.finalizarPedido();
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -108,9 +129,18 @@ class _PagePayState extends State<PagePay> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         try {
                           provider.somar(widget.item, 'dinheiro');
+
+                          final PedidosModel pedidosems = PedidosModel(
+                            id: const Uuid().v4(),
+                            produtos: cart.cartItems,
+                          );
+                          await DateListPedidos.insertPedido(pedidosems);
+
+                          await DatabaseHelper.updateProducts(cart.cartItems);
+
                           cart.finalizarPedido();
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(

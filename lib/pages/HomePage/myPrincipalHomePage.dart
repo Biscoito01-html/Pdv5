@@ -50,8 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(10),
                   color: Theme.of(context).secondaryHeaderColor,
                 ),
-                width: 350,
-                height: 350,
+                width: 250,
+                height: 250,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -90,6 +90,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     text: 'Clientes',
                     onTap: () {
                       Navigator.pushNamed(context, '/clientExibition');
+                    },
+                  ),
+                  ButtonPrinciplay(
+                    icon: const Icon(
+                      Icons.real_estate_agent_outlined,
+                    ),
+                    text: 'Pedidos',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/pedidos');
                     },
                   ),
                 ],

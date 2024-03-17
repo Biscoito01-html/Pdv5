@@ -74,14 +74,13 @@ class _CardProductItemState extends State<CardProductItem> {
 
                       if (quantity > 0) {
                         provider.addCart(
-                          CartModel(
+                          ProductModel(
                             id: widget.product.id,
                             codigodeBarras: widget.product.codigodeBarras,
                             description: widget.product.description,
                             price: widget.product.price,
-                            lote: widget.product.lote,
                             quantity: quantity,
-                            createdAt: DateTime.now(),
+                            imageUrl: widget.product.imageUrl,
                           ),
                         );
                         print('Adicionado ao carrinho');
@@ -112,8 +111,8 @@ class _CardProductItemState extends State<CardProductItem> {
               height: 50,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.file(
-                  widget.product.imageUrl,
+                child: Image.network(
+                  "${widget.product.imageUrl}",
                   fit: BoxFit.cover,
                 ),
               ),
